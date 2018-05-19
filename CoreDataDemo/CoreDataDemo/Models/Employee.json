@@ -1,0 +1,17 @@
+
+{
+    "employee": [
+                 {
+                 "empId": "12345",
+                 "name": "Danny"
+                 },
+                 {
+                 "empId": "12342",
+                 "name": "james"
+                 },
+                 {
+                 "empId": "12341",
+                 "name": "Bond"
+                 }
+                 ]
+}
