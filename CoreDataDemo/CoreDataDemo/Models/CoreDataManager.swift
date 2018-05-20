@@ -20,7 +20,7 @@ final class CoreDataManager {
             mEmployee.name = String(format:"Employee_%d",i)
             mEmployee.empID = Int64(i)
             mEmployee.age = 30
-            mEmployee.designation = "IT Consultant"
+            mEmployee.designation =  (i%2 == 0) ? "Associate IT Consultant" : "IT Consultant"
         }
         context.performAndWait {
             CoreDataStack.shared.saveContext()
@@ -51,7 +51,7 @@ final class CoreDataManager {
     }
     
     static func batchUpdate(entityName: String,context:NSManagedObjectContext)  {
-        let batchUpdateRequest = NSBatchUpdateRequest(entityName: "Employee")
+        let batchUpdateRequest = NSBatchUpdateRequest(entityName: entityName)
         batchUpdateRequest.propertiesToUpdate = ["name":"Tapash Mollick","designation":"Associate IT Consultant"]
         batchUpdateRequest.resultType = .updatedObjectIDsResultType
         do {
@@ -71,6 +71,27 @@ final class CoreDataManager {
         }
         catch{
             fatalError("Unable to batchUpdate")
+        }
+    }
+    
+    static func batchDelete(entityName: String,context:NSManagedObjectContext)  {
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fetch.predicate = NSPredicate(format:"designation==%@","Associate IT Consultant")
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetch)
+        
+        do {
+            let start = Date().currentTimeMillis
+            let batchDeleteResult = try context.execute(batchDeleteRequest) as? NSBatchDeleteResult
+            let objectIDArray = batchDeleteResult?.result as? [NSManagedObjectID]
+
+            let changes = [NSDeletedObjectsKey:objectIDArray]
+            print("time taken to batch delete\(Date().currentTimeMillis - start)")
+            context.refreshAllObjects()
+
+//            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: (changes ?? nil)!, into: [context])
+        }
+        catch{
+            fatalError("Unable to batchDelete")
         }
     }
 }

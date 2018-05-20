@@ -39,6 +39,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func onBatchUpdateDelete(_ sender: Any) {
+        CoreDataManager.batchDelete(entityName: "Employee", context: CoreDataStack.shared.persistentContainer.viewContext)
     }
     
 }
@@ -46,7 +47,10 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDataSource,UITableViewDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return (self.fetchedResultsController.sections?.count)!
+        guard let count = self.fetchedResultsController.sections?.count else {
+            return 0
+        }
+        return count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
