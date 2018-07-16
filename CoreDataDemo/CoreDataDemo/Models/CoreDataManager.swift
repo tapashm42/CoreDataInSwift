@@ -32,7 +32,11 @@ final class CoreDataManager {
         let managedContext = context
     
     // Initialize Fetch Request
-    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Employee")
+//    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Employee")
+    
+    let fetchRequest = Employee.fetchRequest() as NSFetchRequest
+    
+//    let fetchRequest = Employee.fetchRequest()
 
     // Add Sort Descriptors
     let sortDescriptor = NSSortDescriptor(key: sortingKey, ascending: true)
@@ -78,7 +82,6 @@ final class CoreDataManager {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetch.predicate = NSPredicate(format:"designation==%@","Associate IT Consultant")
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetch)
-        
         do {
             let start = Date().currentTimeMillis
             let batchDeleteResult = try context.execute(batchDeleteRequest) as? NSBatchDeleteResult

@@ -1,0 +1,6 @@
+framework module Pods_GoscaleAsignmentUITests {
+  umbrella header "Pods-GoscaleAsignmentUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
